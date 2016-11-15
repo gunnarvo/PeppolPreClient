@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="AccessPointClientService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://peppolclient.xledger.net/AccessPointClientService.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://peppolclient.xledger.net/AccessPointClientService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IAccessPointClientService_SendMessage_InputMessage">
+    <wsdl:part name="parameters" element="tns:SendMessage" />
+  </wsdl:message>
+  <wsdl:message name="IAccessPointClientService_SendMessage_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SendMessageResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAccessPointClientService_SmlLookup_InputMessage">
+    <wsdl:part name="parameters" element="tns:SmlLookup" />
+  </wsdl:message>
+  <wsdl:message name="IAccessPointClientService_SmlLookup_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SmlLookupResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAccessPointClientService_Ping_InputMessage">
+    <wsdl:part name="parameters" element="tns:Ping" />
+  </wsdl:message>
+  <wsdl:message name="IAccessPointClientService_Ping_OutputMessage">
+    <wsdl:part name="parameters" element="tns:PingResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAccessPointClientService_PingAccessPointService_InputMessage">
+    <wsdl:part name="parameters" element="tns:PingAccessPointService" />
+  </wsdl:message>
+  <wsdl:message name="IAccessPointClientService_PingAccessPointService_OutputMessage">
+    <wsdl:part name="parameters" element="tns:PingAccessPointServiceResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IAccessPointClientService">
+    <wsdl:operation name="SendMessage">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAccessPointClientService/SendMessage" message="tns:IAccessPointClientService_SendMessage_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAccessPointClientService/SendMessageResponse" message="tns:IAccessPointClientService_SendMessage_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SmlLookup">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAccessPointClientService/SmlLookup" message="tns:IAccessPointClientService_SmlLookup_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAccessPointClientService/SmlLookupResponse" message="tns:IAccessPointClientService_SmlLookup_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Ping">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAccessPointClientService/Ping" message="tns:IAccessPointClientService_Ping_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAccessPointClientService/PingResponse" message="tns:IAccessPointClientService_Ping_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="PingAccessPointService">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAccessPointClientService/PingAccessPointService" message="tns:IAccessPointClientService_PingAccessPointService_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAccessPointClientService/PingAccessPointServiceResponse" message="tns:IAccessPointClientService_PingAccessPointService_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IAccessPointClientService" type="tns:IAccessPointClientService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="SendMessage">
+      <soap:operation soapAction="http://tempuri.org/IAccessPointClientService/SendMessage" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SmlLookup">
+      <soap:operation soapAction="http://tempuri.org/IAccessPointClientService/SmlLookup" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Ping">
+      <soap:operation soapAction="http://tempuri.org/IAccessPointClientService/Ping" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PingAccessPointService">
+      <soap:operation soapAction="http://tempuri.org/IAccessPointClientService/PingAccessPointService" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="AccessPointClientService">
+    <wsdl:port name="BasicHttpBinding_IAccessPointClientService" binding="tns:BasicHttpBinding_IAccessPointClientService">
+      <soap:address location="http://peppolclient.xledger.net/AccessPointClientService.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
