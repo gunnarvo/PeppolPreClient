@@ -72,6 +72,7 @@
             this.label7 = new System.Windows.Forms.Label();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -90,9 +91,10 @@
             // 
             // btnSend
             // 
-            this.btnSend.Location = new System.Drawing.Point(156, 388);
+            this.btnSend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnSend.Location = new System.Drawing.Point(40, 609);
             this.btnSend.Name = "btnSend";
-            this.btnSend.Size = new System.Drawing.Size(75, 23);
+            this.btnSend.Size = new System.Drawing.Size(75, 24);
             this.btnSend.TabIndex = 1;
             this.btnSend.Text = "Send";
             this.btnSend.UseVisualStyleBackColor = true;
@@ -321,7 +323,7 @@
             // 
             // btnUblGetDocumentType
             // 
-            this.btnUblGetDocumentType.Location = new System.Drawing.Point(245, 389);
+            this.btnUblGetDocumentType.Location = new System.Drawing.Point(153, 388);
             this.btnUblGetDocumentType.Name = "btnUblGetDocumentType";
             this.btnUblGetDocumentType.Size = new System.Drawing.Size(139, 23);
             this.btnUblGetDocumentType.TabIndex = 18;
@@ -336,7 +338,7 @@
             this.txtResult.Location = new System.Drawing.Point(40, 418);
             this.txtResult.Multiline = true;
             this.txtResult.Name = "txtResult";
-            this.txtResult.Size = new System.Drawing.Size(597, 201);
+            this.txtResult.Size = new System.Drawing.Size(597, 185);
             this.txtResult.TabIndex = 19;
             // 
             // webBrowser1
@@ -347,7 +349,7 @@
             this.webBrowser1.Location = new System.Drawing.Point(643, 48);
             this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(240, 571);
+            this.webBrowser1.Size = new System.Drawing.Size(240, 585);
             this.webBrowser1.TabIndex = 20;
             this.webBrowser1.WebBrowserShortcutsEnabled = false;
             // 
@@ -377,9 +379,9 @@
             // 
             // btnClear
             // 
-            this.btnClear.Location = new System.Drawing.Point(563, 389);
+            this.btnClear.Location = new System.Drawing.Point(585, 389);
             this.btnClear.Name = "btnClear";
-            this.btnClear.Size = new System.Drawing.Size(75, 23);
+            this.btnClear.Size = new System.Drawing.Size(53, 23);
             this.btnClear.TabIndex = 24;
             this.btnClear.Text = "Clear";
             this.btnClear.UseVisualStyleBackColor = true;
@@ -503,19 +505,30 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(390, 388);
+            this.button1.Location = new System.Drawing.Point(298, 388);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(121, 23);
+            this.button1.Size = new System.Drawing.Size(104, 23);
             this.button1.TabIndex = 33;
             this.button1.Text = "Vefa Validate";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(408, 389);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(171, 23);
+            this.button2.TabIndex = 34;
+            this.button2.Text = "Vefa Validate mass test";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(895, 631);
+            this.ClientSize = new System.Drawing.Size(895, 645);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this.label7);
@@ -608,6 +621,7 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button btnRefresh;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
     }
 }
 

@@ -18,6 +18,12 @@
   <wsdl:message name="IAccessPointClientService_SmlLookup_OutputMessage">
     <wsdl:part name="parameters" element="tns:SmlLookupResponse" />
   </wsdl:message>
+  <wsdl:message name="IAccessPointClientService_VefaValidation_InputMessage">
+    <wsdl:part name="parameters" element="tns:VefaValidation" />
+  </wsdl:message>
+  <wsdl:message name="IAccessPointClientService_VefaValidation_OutputMessage">
+    <wsdl:part name="parameters" element="tns:VefaValidationResponse" />
+  </wsdl:message>
   <wsdl:message name="IAccessPointClientService_Ping_InputMessage">
     <wsdl:part name="parameters" element="tns:Ping" />
   </wsdl:message>
@@ -38,6 +44,10 @@
     <wsdl:operation name="SmlLookup">
       <wsdl:input wsaw:Action="http://tempuri.org/IAccessPointClientService/SmlLookup" message="tns:IAccessPointClientService_SmlLookup_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IAccessPointClientService/SmlLookupResponse" message="tns:IAccessPointClientService_SmlLookup_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="VefaValidation">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAccessPointClientService/VefaValidation" message="tns:IAccessPointClientService_VefaValidation_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAccessPointClientService/VefaValidationResponse" message="tns:IAccessPointClientService_VefaValidation_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="Ping">
       <wsdl:input wsaw:Action="http://tempuri.org/IAccessPointClientService/Ping" message="tns:IAccessPointClientService_Ping_InputMessage" />
@@ -61,6 +71,15 @@
     </wsdl:operation>
     <wsdl:operation name="SmlLookup">
       <soap:operation soapAction="http://tempuri.org/IAccessPointClientService/SmlLookup" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VefaValidation">
+      <soap:operation soapAction="http://tempuri.org/IAccessPointClientService/VefaValidation" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

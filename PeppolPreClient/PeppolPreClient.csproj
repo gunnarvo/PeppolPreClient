@@ -120,6 +120,9 @@
     <None Include="Service References\net.xledger.peppolclient\configuration.svcinfo" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Service References\net.xledger.peppolclient\PeppolPreClient.net.xledger.peppolclient.VefaValidationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\net.xledger.peppolclient\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>

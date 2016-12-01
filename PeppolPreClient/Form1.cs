@@ -168,42 +168,48 @@ namespace PeppolPreClient
 
         private void btnSend_Click(object sender, EventArgs e)
         {
-            // Creat AP Reference
-            net.xledger.peppolclient.AccessPointClientServiceClient ap = new net.xledger.peppolclient.AccessPointClientServiceClient();
-
-            XmlDocument body = new XmlDocument();
-            body.Load(txtDocument.Text);
-            string sXmlBody = body.OuterXml;
-
-            if (rbDocumentTypeInvoice.Checked)
-                lRsEdocType = 37501;
-            else if (rbDocumentTypeCreditNote.Checked)
-                lRsEdocType = 37502;
-            else
-                lRsEdocType = -1;
-
-            string sDocumentID = DocumentID(xd.DocumentElement, CustomizationID, UBLVersionID);
-
-
-            // Send
-            long lRet = 1;
-            string sErrorInfo;
-            
-            try
+            DialogResult result = MessageBox.Show("You are about to send this document out on the PEPPOL production network. Do you want to continue", "WARNING", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+            if (result == DialogResult.OK)
             {
-                lRet = ap.SendMessage(SenderID, RecipientID, sDocumentID, ProfileID, sXmlBody, out sErrorInfo);
-                if (lRet == 0)
+                // Creat AP Reference
+                net.xledger.peppolclient.AccessPointClientServiceClient ap = new net.xledger.peppolclient.AccessPointClientServiceClient();
+                
+                XmlDocument body = new XmlDocument();
+                body.Load(txtDocument.Text);
+                string sXmlBody = body.OuterXml;
+
+                if (rbDocumentTypeInvoice.Checked)
+                    lRsEdocType = 37501;
+                else if (rbDocumentTypeCreditNote.Checked)
+                    lRsEdocType = 37502;
+                else
+                    lRsEdocType = -1;
+
+                string sDocumentID = DocumentID(xd.DocumentElement, CustomizationID, UBLVersionID);
+
+
+                // Send
+                long lRet = 1;
+                string sErrorInfo;
+
+                try
                 {
-                    txtResult.Text = "Document successfully sent!";
+                    lRet = ap.SendMessage(SenderID, RecipientID, sDocumentID, ProfileID, sXmlBody, out sErrorInfo);
+                    if (lRet == 0)
+                    {
+                        txtResult.Text = "Document successfully sent!";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    txtResult.Text = ex.Message;
+
+                    if (lRet == 0)
+                        lRet = 1; // Give it an error code
                 }
             }
-            catch (Exception ex)
-            {
-                txtResult.Text = ex.Message;
-
-                if (lRet == 0)
-                    lRet = 1; // Give it an error code
-            }
+            else
+                txtResult.Text = "Document NOT sent!";
         }
        
         private string DocumentID(XmlNode xnRoot, string sCustomizationID, string sUBLVersionID)
@@ -552,70 +558,109 @@ namespace PeppolPreClient
 
         private void button1_Click(object sender, EventArgs e)
         {
-            byte[] ba = File.ReadAllBytes(txtDocument.Text);
-            string sRes = UploadMultipart(ba, txtDocument.Text, "multipart-formdata", "http://peppolclient.xledger.net:8080/validator-web-2.0.2/");
-            txtResult.Text = sRes;
+            string sError = string.Empty;
+            XDocument xd = XDocument.Load(txtDocument.Text);
+
+            // No need to validate attachments. Remove them to save time.
+            var comparison = StringComparison.InvariantCultureIgnoreCase;
+            var elements = xd.Descendants()
+                     .Where(x => x.Name.LocalName.IndexOf("Attachment", comparison) != -1);
+
+            elements.Remove();
+
+            string sFile = xd.ToString();
+            net.xledger.peppolclient.AccessPointClientServiceClient ap = new net.xledger.peppolclient.AccessPointClientServiceClient();
+            bool bRet = ap.VefaValidation(sFile, out sError);
+            if (bRet)
+                txtResult.Text = "Validation OK";
+            else
+                txtResult.Text = sError;
+
         }
 
-        private string UploadMultipart(byte[] file, string filename, string contentType, string url)
+        //private string UploadMultipart(byte[] file, string filename, string contentType, string url)
+        //{
+        //    var webClient = new WebClient();
+        //    string boundary = "------------------------" + DateTime.Now.Ticks.ToString("x");
+        //    webClient.Headers.Add("Content-Type", "multipart/form-data; boundary=" + boundary);
+        //    var fileData = webClient.Encoding.GetString(file);
+        //    var package = string.Format("--{0}\r\nContent-Disposition: form-data; name=\"file\"; filename=\"{1}\"\r\nContent-Type: {2}\r\n\r\n{3}\r\n--{0}--\r\n", boundary, filename, contentType, fileData);
+
+        //    var nfile = webClient.Encoding.GetBytes(package);
+
+        //    byte[] resp = webClient.UploadData(url, "POST", nfile);
+        //    string result = System.Text.Encoding.UTF8.GetString(resp);
+        //    return ParseResult(result);
+        //}
+
+        //private string ParseResult(string s)
+        //{
+        //    StringBuilder sbRes = new StringBuilder();
+        //    XmlDocument xd = new XmlDocument();
+
+        //    int iStart = s.IndexOf("<body>");
+        //    int iEnd = s.IndexOf("</body>");
+
+        //    s = s.Substring(iStart, iEnd - iStart + 7);
+
+        //    xd.LoadXml(s);
+        //    XmlNodeList xnList = xd.SelectNodes("/body/div/div/div/div[@class='assertion']");
+
+        //    foreach (XmlNode xn in xnList)
+        //    {
+        //        string sErrorCategory = string.Empty;
+        //        sErrorCategory = xn["div"].InnerText.Trim().ToUpper();
+        //        if (sErrorCategory.Contains("ERROR") || sErrorCategory.Contains("FATAL"))
+        //        {
+        //            XmlNode xn1 = xn.SelectSingleNode("div[@class='title collapsable']");
+        //            if (xn1 != null)
+        //            {
+        //                StringBuilder sbResTemp = new StringBuilder();
+        //                try
+        //                {
+        //                    XmlNode xn2 = xn1.SelectSingleNode("span[@class='identifier']");
+        //                    sbResTemp.Append(String.Format("{0} {1}: ", sErrorCategory, xn2.InnerText));
+
+        //                    XmlNode xn3 = xn1.LastChild;
+        //                    sbResTemp.Append(String.Format("{0}. ", xn3.InnerText.Replace("\r\n", " ").Trim()));
+        //                }
+        //                catch (Exception ex)
+        //                {
+        //                    sbResTemp.Clear();
+        //                    sbResTemp.Append(string.Format("{0} ({1}) {2}", sErrorCategory, ex.Message, xn1.InnerText));
+        //                }
+        //                finally
+        //                {
+        //                    sbRes.Append(sbResTemp.ToString());
+        //                }
+        //            }
+        //        }
+        //    }
+        //    return sbRes.ToString();
+        //}
+
+        private void button2_Click(object sender, EventArgs e)
         {
-            var webClient = new WebClient();
-            string boundary = "------------------------" + DateTime.Now.Ticks.ToString("x");
-            webClient.Headers.Add("Content-Type", "multipart/form-data; boundary=" + boundary);
-            var fileData = webClient.Encoding.GetString(file);
-            var package = string.Format("--{0}\r\nContent-Disposition: form-data; name=\"file\"; filename=\"{1}\"\r\nContent-Type: {2}\r\n\r\n{3}\r\n--{0}--\r\n", boundary, filename, contentType, fileData);
-
-            var nfile = webClient.Encoding.GetBytes(package);
-
-            byte[] resp = webClient.UploadData(url, "POST", nfile);
-            string result = System.Text.Encoding.UTF8.GetString(resp);
-            return ParseResult(result);
-        }
-
-        private string ParseResult(string s)
-        {
-            StringBuilder sbRes = new StringBuilder();
-            XmlDocument xd = new XmlDocument();
-
-            int iStart = s.IndexOf("<body>");
-            int iEnd = s.IndexOf("</body>");
-
-            s = s.Substring(iStart, iEnd - iStart + 7);
-
-            xd.LoadXml(s);
-            XmlNodeList xnList = xd.SelectNodes("/body/div/div/div/div[@class='assertion']");
-
-            foreach (XmlNode xn in xnList)
+            string[] filePaths = Directory.GetFiles(@"C:\Users\gunnar.voyenli\Documents\Tmp\Vefa");
+            StringBuilder sb = new StringBuilder();
+            foreach (string file in filePaths)
             {
-                string sErrorCategory = string.Empty;
-                sErrorCategory = xn["div"].InnerText.Trim().ToUpper();
-                if (sErrorCategory.Contains("ERROR") || sErrorCategory.Contains("FATAL"))
-                {
-                    XmlNode xn1 = xn.SelectSingleNode("div[@class='title collapsable']");
-                    if (xn1 != null)
-                    {
-                        StringBuilder sbResTemp = new StringBuilder();
-                        try
-                        {
-                            XmlNode xn2 = xn1.SelectSingleNode("span[@class='identifier']");
-                            sbResTemp.Append(String.Format("{0} {1}: ", sErrorCategory, xn2.InnerText));
+                XDocument xd = XDocument.Load(file);
 
-                            XmlNode xn3 = xn1.LastChild;
-                            sbResTemp.Append(String.Format("{0}. ", xn3.InnerText.Replace("\r\n", " ").Trim()));
-                        }
-                        catch (Exception ex)
-                        {
-                            sbResTemp.Clear();
-                            sbResTemp.Append(string.Format("{0} ({1}) {2}", sErrorCategory, ex.Message, xn1.InnerText));
-                        }
-                        finally
-                        {
-                            sbRes.Append(sbResTemp.ToString());
-                        }
-                    }
-                }
+                // No need to validate attachments. Remove them to save time.
+                var comparison = StringComparison.InvariantCultureIgnoreCase;
+                var elements = xd.Descendants()
+                         .Where(x => x.Name.LocalName.IndexOf("Attachment", comparison) != -1);
+
+                elements.Remove();
+
+                byte[] ba = Encoding.UTF8.GetBytes(xd.ToString());
+
+                DateTime dt = DateTime.Now;
+                //string s = UploadMultipart(ba, txtDocument.Text, "multipart-formdata", "http://peppolclient.xledger.net:8080/validator-web-2.0.2/");
+                //TimeSpan ts = DateTime.Now - dt;
+                //txtResult.Text += string.Format("{0}:{1} \r\n", ts.TotalMilliseconds, s);
             }
-            return sbRes.ToString();
         }
     }
 }

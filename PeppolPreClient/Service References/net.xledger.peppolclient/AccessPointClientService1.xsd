@@ -36,6 +36,21 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="VefaValidation">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="sFile" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="VefaValidationResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="VefaValidationResult" type="xs:boolean" />
+        <xs:element minOccurs="0" name="sErrorInfo" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="Ping">
     <xs:complexType>
       <xs:sequence />
